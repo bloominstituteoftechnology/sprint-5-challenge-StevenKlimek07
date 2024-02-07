@@ -1,4 +1,3 @@
-
 async function sprintChallenge5() { // Note the async keyword, in case you wish to use `await` inside sprintChallenge5
   // 👇 WORK WORK BELOW THIS LINE 👇
 
@@ -12,12 +11,11 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
         axios.get('http://localhost:3003/api/learners'),
         axios.get('http://localhost:3003/api/mentors')
       ]);
-  
+
       const { data: dataA } = responseA;
       const { data: dataB } = responseB;
 
-      // console.log('dataB:', dataB); // Add this line to log dataB
-  
+
       const combinedData = dataA.map((learner) => {
         const mentors = learner.mentors.map((mentorId) => {
           // Check if dataB exists and has mentors property
@@ -28,7 +26,7 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
             return 'Unknown Mentor';
           }
         });
-      
+
         return {
           id: learner.id,
           email: learner.email,
@@ -36,15 +34,15 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
           mentors,
         };
       });
-      
-  
+
+
       return combinedData;
     } catch (error) {
       console.log('Error fetching data:', error.message);
       throw error;
     }
   }
-  
+
   // Function to create a Learner Card
   function createLearnerCard(learner) {
     const card = document.createElement('div');
@@ -52,32 +50,48 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 
     const fullNameElement = document.createElement('h3');
     fullNameElement.textContent = `${learner.fullName}`;
-    
+
     // const idElement = document.createElement('p');
     // idElement.textContent = `${learner.id}`;
-  
+
     const emailElement = document.createElement('div');
     emailElement.textContent = `${learner.email}`;
 
     const mentorsElement = document.createElement('h4');
     mentorsElement.textContent = "Mentors";
-    mentorsElement.classList.add("closed") 
+    // mentorsElement.classList.add("closed") 
 
+    
+
+    const infoElement = document.querySelector('.info');
 
     card.appendChild(fullNameElement);
-    // card.appendChild(idElement);
     card.appendChild(emailElement);
     card.appendChild(mentorsElement);
-
-    const pElement = document.querySelector('p')
-
+  
     // Add click event listener
-  card.addEventListener('click', () => {
-    // Change the text content of infoElement when card is clicked
-    pElement.textContent = `The selected learner is ${learner.fullName}`;
-  });
-
-
+    card.addEventListener('click', () => {
+      // Toggle "selected" class
+      card.classList.toggle('selected');
+  
+      // Update info element
+      if (card.classList.contains('selected')) {
+        infoElement.textContent = `The selected learner is ${learner.fullName}`;
+      } else {
+        const selectedCard = document.querySelector('.card.selected');
+        if (!selectedCard) {
+          infoElement.textContent = 'No learner is selected.';
+        }
+      }
+  
+      // Deselect other cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach((c) => {
+        if (c !== card) {
+          c.classList.remove('selected');
+        }
+      });
+    });
   
     return card;
   }
@@ -86,13 +100,17 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
   async function main() {
     try {
       const combinedData = await fetchData();
-  
-      // Assuming you have a container with the class "cards"
+
+      // a container with the class "cards"
       const cardsContainer = document.querySelector('.cards');
-  
+
       // Clear existing content in case you call main multiple times
       cardsContainer.innerHTML = '';
-  
+
+      // a container with the class "info"
+    const infoElement = document.querySelector('.info');
+    infoElement.textContent = 'No learner is selected'; // Set initial text content
+
       combinedData.forEach((learner) => {
         const learnerCard = createLearnerCard(learner);
         cardsContainer.appendChild(learnerCard);
@@ -101,14 +119,13 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
       console.error('Error in main:', error.message);
     }
   }
-  
+
   // Call the main function
   main();
 
 
   // 👆 WORK WORK ABOVE THIS LINE 👆
 }
-
 // ❗ DO NOT CHANGE THE CODE  BELOW
 if (typeof module !== 'undefined' && module.exports) module.exports = { sprintChallenge5 }
 else sprintChallenge5()
