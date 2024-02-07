@@ -56,13 +56,13 @@ function createLearnerCard(learner) {
 
   const mentorsElement = document.createElement('h4');
   mentorsElement.textContent = "Mentors";
-  mentorsElement.classList.add("closed"); // Initially hide mentors
+  mentorsElement.classList.add("closed"); 
 
-  const mentorsList = document.createElement('ul'); // Create <ul> for mentors
+  const mentorsList = document.createElement('ul'); 
 
   // Add click event listener to toggle visibility of mentors
   mentorsElement.addEventListener('click', (event) => {
-    event.stopPropagation(); // Prevent card click event from firing
+    event.stopPropagation(); 
     mentorsElement.classList.toggle('closed'); // Toggle class to open/close mentors
     mentorsElement.classList.toggle('open');
   });
@@ -80,11 +80,10 @@ function createLearnerCard(learner) {
   card.appendChild(fullNameElement);
   card.appendChild(emailElement);
   card.appendChild(mentorsElement);
-  card.appendChild(mentorsList); // Append mentors list to card
+  card.appendChild(mentorsList); 
 
   // Add click event listener to card
   card.addEventListener('click', () => {
-    // Toggle "selected" class
     card.classList.toggle('selected');
 
     // Update info element
@@ -93,7 +92,7 @@ function createLearnerCard(learner) {
     } else {
       const selectedCard = document.querySelector('.card.selected');
       if (!selectedCard) {
-        infoElement.textContent = 'No learner is selected.';
+        infoElement.textContent = 'No learner is selected';
       }
     }
 
@@ -114,15 +113,15 @@ function createLearnerCard(learner) {
     try {
       const combinedData = await fetchData();
 
-      // a container with the class "cards"
+
       const cardsContainer = document.querySelector('.cards');
 
-      // Clear existing content in case you call main multiple times
+
       cardsContainer.innerHTML = '';
 
-      // a container with the class "info"
+
     const infoElement = document.querySelector('.info');
-    infoElement.textContent = 'No learner is selected'; // Set initial text content
+    infoElement.textContent = 'No learner is selected'; 
 
       combinedData.forEach((learner) => {
         const learnerCard = createLearnerCard(learner);
@@ -133,7 +132,7 @@ function createLearnerCard(learner) {
     }
   }
 
-  // Call the main function
+
   main();
 
 
